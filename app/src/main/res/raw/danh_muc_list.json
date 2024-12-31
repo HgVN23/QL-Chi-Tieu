@@ -1,0 +1,18 @@
+[
+  {
+    "icon": "ic_cong_viec",
+    "text": "Công việc"
+  },
+  {
+    "icon": "ic_kham_benh",
+    "text": "Khám bệnh"
+  },
+  {
+    "icon": "ic_nuoc",
+    "text": "Nước"
+  },
+  {
+    "icon": "ic_dien",
+    "text": "Điện"
+  }
+]
