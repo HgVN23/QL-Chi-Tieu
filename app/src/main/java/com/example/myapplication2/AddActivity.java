@@ -108,14 +108,20 @@ public class AddActivity extends AppCompatActivity {
                 inputKhoanTien.getText().toString().trim().isEmpty() ||
                 inputDanhMuc.getText().toString().trim().isEmpty()) {
 
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         try {
             Integer.parseInt(inputKhoanTien.getText().toString().trim());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Khoản tiền phải là số.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Khoản tiền phải là số", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String date = inputNgayThu.getText().toString().trim();
+        if (!date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+            Toast.makeText(this, "Ngày thu chi phải đúng định dạng dd-MM-yyyy", Toast.LENGTH_SHORT).show();
             return false;
         }
 

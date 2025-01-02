@@ -114,6 +114,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -129,8 +130,8 @@
             android:id="@+id/btnBackUpdate"
             android:layout_width="140dp"
             android:layout_height="63dp"
-            android:backgroundTint="@color/design_default_color_error"
-            android:text="Hủy" />
+            android:backgroundTint="#8F9193"
+            android:text="Quay lại" />
 
         <View
             android:id="@+id/view"
@@ -142,7 +143,23 @@
             android:id="@+id/btnUpdateConfirm"
             android:layout_width="140dp"
             android:layout_height="63dp"
+            android:backgroundTint="#169900"
             android:text="Cập nhật" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="105dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="242dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/design_default_color_error"
+        android:text="Xóa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

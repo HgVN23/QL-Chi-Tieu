@@ -11,6 +11,7 @@
         android:id="@+id/btnAdd"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#0389C1"
         android:text="Thêm" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

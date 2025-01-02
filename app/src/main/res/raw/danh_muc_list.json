@@ -4,8 +4,12 @@
     "text": "Công việc"
   },
   {
-    "icon": "ic_kham_benh",
-    "text": "Khám bệnh"
+    "icon": "ic_tiet_kiem",
+    "text": "Tiết kiệm"
+  },
+  {
+    "icon": "ic_nguoi",
+    "text": "Người"
   },
   {
     "icon": "ic_nuoc",
@@ -14,5 +18,41 @@
   {
     "icon": "ic_dien",
     "text": "Điện"
+  },
+  {
+    "icon": "ic_mang",
+    "text": "Mạng"
+  },
+  {
+    "icon": "ic_thuc_pham",
+    "text": "Thực phẩm"
+  },
+  {
+    "icon": "ic_giai_tri",
+    "text": "Giải trí"
+  },
+  {
+    "icon": "ic_suc_khoe",
+    "text": "Sức khỏe"
+  },
+  {
+    "icon": "ic_giao_duc",
+    "text": "Giáo dục"
+  },
+  {
+    "icon": "ic_dau_tu",
+    "text": "Đầu tư"
+  },
+  {
+    "icon": "ic_du_lich",
+    "text": "Du lịch"
+  },
+  {
+    "icon": "ic_mua_sam",
+    "text": "Mua sắm"
+  },
+  {
+    "icon": "ic_thu",
+    "text": "Khác"
   }
 ]

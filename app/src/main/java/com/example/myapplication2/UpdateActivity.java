@@ -1,6 +1,7 @@
 package com.example.myapplication2;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class UpdateActivity extends AppCompatActivity {
     private EditText inputTieuDe, inputNgayThu, inputKhoanTien;
     private TextView updateTitle;
     private AutoCompleteTextView inputDanhMuc;
-    private Button btnUpdateConfirm, btnBack, btnDate;
+    private Button btnUpdateConfirm, btnBack, btnDate, btnDelete;
 
     private int id;
     private String type;
@@ -53,6 +54,7 @@ public class UpdateActivity extends AppCompatActivity {
         btnUpdateConfirm = findViewById(R.id.btnUpdateConfirm);
         btnBack = findViewById(R.id.btnBackUpdate);
         btnDate = findViewById(R.id.btnDateUpdate);
+        btnDelete = findViewById(R.id.btnDelete);
     }
 
     private void retrieveAndSetData() {
@@ -71,16 +73,31 @@ public class UpdateActivity extends AppCompatActivity {
     private void setupDatePicker() {
         btnDate.setOnClickListener(view -> {
             Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH);
-            int year = calendar.get(Calendar.YEAR);
 
-            DatePickerDialog dialog = new DatePickerDialog(UpdateActivity.this, (datePicker, yearSelected, monthSelected, daySelected) ->
-                    inputNgayThu.setText(String.format("%04d-%02d-%02d", yearSelected, monthSelected + 1, daySelected)),
-                    year, month, day);
+            String currentDate = inputNgayThu.getText().toString().trim();
+            if (!currentDate.isEmpty()) {
+                try {
+                    String[] dateParts = currentDate.split("-");
+                    int day = Integer.parseInt(dateParts[0]);
+                    int month = Integer.parseInt(dateParts[1]) - 1;
+                    int year = Integer.parseInt(dateParts[2]);
+
+                    calendar.set(year, month, day);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dialog = new DatePickerDialog(UpdateActivity.this, (datePicker, i, i1, i2) ->
+                    inputNgayThu.setText(String.format("%02d-%02d-%04d", i2, i1 + 1, i)), year, month, day);
             dialog.show();
         });
     }
+
 
     private void setupDanhMucDropdown() {
         JSONLoader jsonLoader = new JSONLoader(this);
@@ -108,6 +125,10 @@ public class UpdateActivity extends AppCompatActivity {
             startActivity(new Intent(UpdateActivity.this, MainActivity.class));
             finish();
         });
+
+        btnDelete.setOnClickListener(view -> {
+            deleteDataFromDatabase();
+        });
     }
 
     private boolean validateInputs() {
@@ -116,14 +137,20 @@ public class UpdateActivity extends AppCompatActivity {
                 inputKhoanTien.getText().toString().trim().isEmpty() ||
                 inputDanhMuc.getText().toString().trim().isEmpty()) {
 
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         try {
             Integer.parseInt(inputKhoanTien.getText().toString().trim());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Khoản tiền phải là số.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Khoản tiền phải là số", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String date = inputNgayThu.getText().toString().trim();
+        if (!date.matches("^\\d{2}-\\d{2}-\\d{4}$")) {
+            Toast.makeText(this, "Ngày thu chi phải đúng định dạng dd-MM-yyyy", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -145,5 +172,22 @@ public class UpdateActivity extends AppCompatActivity {
         Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void deleteDataFromDatabase() {
+        DatabaseHelper myDb = new DatabaseHelper(this);
+
+
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa không?")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    myDb.deleteChiTieu(id);
+                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
     }
 }
