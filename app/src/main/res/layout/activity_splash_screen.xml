@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_marginBottom="16dp"
-        android:text="Chào mừng"
+        android:text="Quản lý Chi tiêu cá nhân"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

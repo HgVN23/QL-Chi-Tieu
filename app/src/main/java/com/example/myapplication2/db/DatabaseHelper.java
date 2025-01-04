@@ -47,13 +47,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAll(String type) {
         String query = "SELECT * FROM " + TABLE_NAME +
-                " WHERE " + COLUMN_TYPE + " = '" + type + "'" +
+                " WHERE " + COLUMN_TYPE + " = ?" +
                 " ORDER BY " + COLUMN_ID + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
         if (db != null) {
-            cursor = db.rawQuery(query, null);
+            cursor = db.rawQuery(query, new String[]{type});
         }
         return cursor;
     }
@@ -98,5 +98,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
+    }
+
+    public Cursor getByFilter(String type, String category, String date) {
+        String query = "SELECT * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_TYPE + " = ?";
+        if(category != null && !category.isEmpty()) {
+            query = query + " AND " + COLUMN_CATEGORY + " = '" + category + "'";
+        }
+        if(date != null && !date.isEmpty()) {
+            query = query + " AND substr(" + COLUMN_DATE + ", 4, 7) = '" + date + "'";
+        }
+        query = query + " ORDER BY " + COLUMN_ID + " DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, new String[]{type});
+        }
+        return cursor;
     }
 }

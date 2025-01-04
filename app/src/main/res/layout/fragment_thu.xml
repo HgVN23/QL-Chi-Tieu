@@ -7,12 +7,26 @@
     android:orientation="vertical"
     tools:context=".fragments.ThuFragment">
 
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#0389C1"
-        android:text="Thêm" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAddThu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#0389C1"
+            android:text="Thêm" />
+
+        <Button
+            android:id="@+id/btnFilterThu"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ic_filter"
+            android:backgroundTint="#C81C1C" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

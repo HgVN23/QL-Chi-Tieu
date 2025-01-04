@@ -1,5 +1,7 @@
 package com.example.myapplication2.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.myapplication2.AddActivity;
+import com.example.myapplication2.FilterActivity;
 import com.example.myapplication2.db.DatabaseHelper;
 import com.example.myapplication2.R;
 import com.example.myapplication2.adapters.ThuChiAdapter;
@@ -25,20 +28,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThuFragment extends Fragment {
-    Button btnAdd;
+    Button btnAdd, btnFilter;
     DatabaseHelper myDb;
     String type = "thu";
+    List<ThuChi> thuChiList;
+    ThuChiAdapter adapter;
+    private String selectedCategory, selectedDate;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_thu, container, false);
 
         myDb = new DatabaseHelper(getActivity());
-        List<ThuChi> thuChiList = new ArrayList<>();
-        displayData(thuChiList);
+        thuChiList = new ArrayList<>();
+        displayData();
 
-        ThuChiAdapter adapter = new ThuChiAdapter(getActivity(), thuChiList, thuChi -> {
+        adapter = new ThuChiAdapter(getActivity(), thuChiList, thuChi -> {
             Intent intent = new Intent(getActivity(), UpdateActivity.class);
             intent.putExtra("id", thuChi.getId());
             intent.putExtra("title", thuChi.getTitle());
@@ -53,7 +60,7 @@ public class ThuFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        btnAdd = view.findViewById(R.id.btnAdd);
+        btnAdd = view.findViewById(R.id.btnAddThu);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,13 +70,38 @@ public class ThuFragment extends Fragment {
             }
         });
 
+        btnFilter = view.findViewById(R.id.btnFilterThu);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FilterActivity.class);
+                intent.putExtra("selectedCategory", selectedCategory);
+                intent.putExtra("selectedDate", selectedDate);
+                startActivityForResult(intent, 1);
+            }
+        });
+
         return view;
     }
 
-    void displayData(List<ThuChi> thuChiList) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            selectedCategory = data.getStringExtra("selectedCategory");
+            selectedDate = data.getStringExtra("selectedDate");
+            filterData(selectedCategory, selectedDate);
+        }
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    void displayData() {
         Cursor cursor = myDb.getAll(type);
 
         if (cursor == null || cursor.getCount() == 0) {
+            thuChiList.clear(); // Clear the list to avoid showing stale data
+            adapter.notifyDataSetChanged(); // Notify the adapter
             Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -87,8 +119,43 @@ public class ThuFragment extends Fragment {
             ));
         }
 
+        if (adapter != null) {
+            adapter.notifyDataSetChanged(); // Refresh the list in RecyclerView
+        }
+
         Toast.makeText(getActivity(), "Dữ liệu đã được tải", Toast.LENGTH_SHORT).show();
 
         cursor.close();
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    void filterData(String category, String date) {
+        Cursor cursor = myDb.getByFilter(type, category, date);
+
+        if (cursor == null || cursor.getCount() == 0) {
+            Toast.makeText(getActivity(), "Không tìm thấy dữ liệu phù hợp", Toast.LENGTH_SHORT).show();
+            thuChiList.clear();
+            adapter.notifyDataSetChanged();
+            return;
+        }
+
+        thuChiList.clear();
+
+        while (cursor.moveToNext()) {
+            thuChiList.add(new ThuChi(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getInt(3),
+                    cursor.getString(4),
+                    cursor.getString(5)
+            ));
+        }
+
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "Dữ liệu đã được lọc", Toast.LENGTH_SHORT).show();
+
+        cursor.close();
+    }
+
 }

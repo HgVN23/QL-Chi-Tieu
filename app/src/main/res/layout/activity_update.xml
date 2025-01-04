@@ -133,12 +133,6 @@
             android:backgroundTint="#8F9193"
             android:text="Quay lại" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="38dp"
-            android:layout_height="11dp"
-            android:layout_weight="1" />
-
         <Button
             android:id="@+id/btnUpdateConfirm"
             android:layout_width="140dp"
