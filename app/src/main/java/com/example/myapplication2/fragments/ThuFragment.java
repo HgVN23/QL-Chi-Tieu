@@ -94,14 +94,12 @@ public class ThuFragment extends Fragment {
         }
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
     void displayData() {
         Cursor cursor = myDb.getAll(type);
 
         if (cursor == null || cursor.getCount() == 0) {
-            thuChiList.clear(); // Clear the list to avoid showing stale data
-            adapter.notifyDataSetChanged(); // Notify the adapter
+            thuChiList.clear();
             Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
             return;
         }

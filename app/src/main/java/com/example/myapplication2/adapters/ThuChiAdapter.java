@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,7 +56,12 @@ public class ThuChiAdapter extends RecyclerView.Adapter<ThuChiAdapter.MyViewHold
 
         holder.tvTitle.setText(thuChi.getTitle());
         holder.tvDate.setText(thuChi.getDate());
-        holder.tvPayment.setText(String.format("+%d VND", thuChi.getPayment()));
+
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        String formattedPayment = decimalFormat.format(thuChi.getPayment());
+        holder.tvPayment.setText(String.format("%s VND", formattedPayment));
 
         String category = thuChi.getCategory();
         Integer iconResId = categoryIconMap.get(category);
