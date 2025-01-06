@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ThongKeActivity">
+
+    <TextView
+        android:id="@+id/thongKeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:padding="10sp"
+        android:text="Thống kê"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thongKeTitle">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputNgayThuChi"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/inputNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tháng thu chi"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnDateNow"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ic_lich"
+            android:tint="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="146dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sumThu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#16A000"
+                android:padding="10sp"
+                android:text="Tổng thu: ... VND"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/sumChi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#A00000"
+                android:padding="10sp"
+                android:text="Tổng chi: ... VND"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/sumAll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00A075"
+            android:padding="10sp"
+            android:text="Phần dư : ... VND"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hanMuc"
+                android:layout_width="353dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#C5AF00"
+                android:padding="10sp"
+                android:text="Cảnh báo hạn mức: Ổn"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sumThu" />
+
+            <Button
+                android:id="@+id/btnSetup"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_cai_dat"
+                android:tint="@color/black" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phần trăm Thu - Chi giữa 2 tháng"
+        tools:layout_editor_absoluteX="103dp"
+        tools:layout_editor_absoluteY="705dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phần trăm danh mục chiếm Thu - Chi"
+        tools:layout_editor_absoluteX="91dp"
+        tools:layout_editor_absoluteY="451dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="478dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputNgayThuChi"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/inputSoSanh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="So sánh với tháng..."
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnDateSS"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ic_lich"
+            android:tint="@color/black" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="160dp"
+        android:layout_height="156dp"
+        app:srcCompat="@drawable/pie_chart_example2"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="549dp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="160dp"
+        android:layout_height="156dp"
+        app:srcCompat="@drawable/pie_chart_example2"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="549dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="160dp"
+        android:layout_height="156dp"
+        app:srcCompat="@drawable/pie_chart_example"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="287dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="160dp"
+        android:layout_height="156dp"
+        app:srcCompat="@drawable/pie_chart_example"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="287dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,4 +9,8 @@
         android:id="@+id/nav_thong_ke"
         android:icon="@drawable/ic_thong_ke"
         android:title="Thống kê" />
+    <item
+        android:id="@+id/nav_cai_dat"
+        android:icon="@drawable/ic_cai_dat"
+        android:title="Cài đặt" />
 </menu>
