@@ -1,55 +1,70 @@
 package com.example.myapplication2;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapplication2.adapters.MyViewPagerAdapter;
-import com.google.android.material.tabs.TabLayout;
+import com.example.myapplication2.fragments.QuanLyFragment;
+import com.example.myapplication2.fragments.SettingFragment;
+import com.example.myapplication2.fragments.ThongKeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    TabLayout tabLayout;
-    ViewPager2 viewPager2;
-    MyViewPagerAdapter myViewPagerAdapter;
 
-    @SuppressLint("MissingInflatedId")
+    private final QuanLyFragment quanLyFragment = new QuanLyFragment();
+    private final ThongKeFragment thongKeFragment = new ThongKeFragment();
+    private final SettingFragment settingFragment = new SettingFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager2 = findViewById(R.id.viewPager2);
-        myViewPagerAdapter = new MyViewPagerAdapter(this);
-        viewPager2.setAdapter(myViewPagerAdapter);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        loadFragment(quanLyFragment);
+
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem(tab.getPosition());
-            }
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+                if (item.getItemId() == R.id.nav_quan_ly) {
+                    selectedFragment = quanLyFragment;
+                } else if (item.getItemId() == R.id.nav_thong_ke) {
+                    selectedFragment = thongKeFragment;
+                } else if (item.getItemId() == R.id.nav_cai_dat) {
+                    selectedFragment = settingFragment;
+                }
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
+                if (selectedFragment != null) {
+                    loadFragment(selectedFragment);
+                }
+                return true;
             }
         });
     }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        for (Fragment addedFragment : fragmentManager.getFragments()) {
+            transaction.hide(addedFragment);
+        }
+
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.container, fragment);
+        }
+
+        transaction.commit();
+    }
+
 }

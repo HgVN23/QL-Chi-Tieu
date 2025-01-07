@@ -26,10 +26,10 @@ import java.util.List;
 
 public class ThuChiAdapter extends RecyclerView.Adapter<ThuChiAdapter.MyViewHolder> {
 
-    private Context context;
-    private List<ThuChi> thuChiList;
-    private HashMap<String, Integer> categoryIconMap;
-    private OnItemClickListener onItemClickListener;
+    private final Context context;
+    private final List<ThuChi> thuChiList;
+    private final HashMap<String, Integer> categoryIconMap;
+    private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(ThuChi thuChi);
@@ -52,27 +52,38 @@ public class ThuChiAdapter extends RecyclerView.Adapter<ThuChiAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ThuChiAdapter.MyViewHolder holder, int position) {
+        String sign;
+        int icon;
         ThuChi thuChi = thuChiList.get(position);
 
         holder.tvTitle.setText(thuChi.getTitle());
         holder.tvDate.setText(thuChi.getDate());
 
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setGroupingSeparator('.');
-        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
-        String formattedPayment = decimalFormat.format(thuChi.getPayment());
-        holder.tvPayment.setText(String.format("%s VND", formattedPayment));
-
         String category = thuChi.getCategory();
         Integer iconResId = categoryIconMap.get(category);
 
         if (iconResId != null) {
-            holder.imageView.setImageResource(iconResId);
+            holder.iconCategory.setImageResource(iconResId);
         } else {
-            holder.imageView.setImageResource(R.drawable.ic_thu);
+            holder.iconCategory.setImageResource(R.drawable.ic_thu);
         }
 
-        // Set click listener
+        if(thuChi.getType().equals("thu")) {
+            sign = "+";
+            icon = R.drawable.ic_tien_thu;
+        } else {
+            sign = "-";
+            icon = R.drawable.ic_tien_chi;
+        }
+
+        holder.iconPayment.setImageResource(icon);
+
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        String formattedPayment = decimalFormat.format(thuChi.getPayment());
+        holder.tvPayment.setText(String.format("%s%s VND", sign, formattedPayment));
+
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(thuChi);
@@ -85,16 +96,17 @@ public class ThuChiAdapter extends RecyclerView.Adapter<ThuChiAdapter.MyViewHold
         return thuChiList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvDate, tvPayment;
-        ImageView imageView;
+        ImageView iconCategory, iconPayment;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvPayment = itemView.findViewById(R.id.tvPayment);
-            imageView = itemView.findViewById(R.id.imageView);
+            iconCategory = itemView.findViewById(R.id.icon_category);
+            iconPayment = itemView.findViewById(R.id.icon_payment);
         }
     }
 
