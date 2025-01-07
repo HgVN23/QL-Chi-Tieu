@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.AddActivity;
@@ -34,6 +35,7 @@ public class ChiFragment extends Fragment {
     List<ThuChi> thuChiList;
     ThuChiAdapter adapter;
     private String selectedCategory, selectedDate;
+    private TextView noDataTextView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +45,7 @@ public class ChiFragment extends Fragment {
 
         myDb = new DatabaseHelper(getActivity());
         thuChiList = new ArrayList<>();
+        noDataTextView = view.findViewById(R.id.noDataTextViewChi);
         displayData();
 
         adapter = new ThuChiAdapter(getActivity(), thuChiList, thuChi -> {
@@ -61,24 +64,18 @@ public class ChiFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         btnAdd = view.findViewById(R.id.btnAddChi);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                intent.putExtra("type", type);
-                startActivity(intent);
-            }
+        btnAdd.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), AddActivity.class);
+            intent.putExtra("type", type);
+            startActivity(intent);
         });
 
         btnFilter = view.findViewById(R.id.btnFilterChi);
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FilterActivity.class);
-                intent.putExtra("selectedCategory", selectedCategory);
-                intent.putExtra("selectedDate", selectedDate);
-                startActivityForResult(intent, 1);
-            }
+        btnFilter.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), FilterActivity.class);
+            intent.putExtra("selectedCategory", selectedCategory);
+            intent.putExtra("selectedDate", selectedDate);
+            startActivityForResult(intent, 1);
         });
 
         return view;
@@ -100,6 +97,7 @@ public class ChiFragment extends Fragment {
 
         if (cursor == null || cursor.getCount() == 0) {
             thuChiList.clear();
+            noDataTextView.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -121,6 +119,7 @@ public class ChiFragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
 
+        noDataTextView.setVisibility(View.GONE);
         Toast.makeText(getActivity(), "Dữ liệu đã được tải", Toast.LENGTH_SHORT).show();
 
         cursor.close();
@@ -134,6 +133,7 @@ public class ChiFragment extends Fragment {
             Toast.makeText(getActivity(), "Không tìm thấy dữ liệu phù hợp", Toast.LENGTH_SHORT).show();
             thuChiList.clear();
             adapter.notifyDataSetChanged();
+            noDataTextView.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -151,6 +151,7 @@ public class ChiFragment extends Fragment {
         }
 
         adapter.notifyDataSetChanged();
+        noDataTextView.setVisibility(View.GONE);
         Toast.makeText(getActivity(), "Dữ liệu đã được lọc", Toast.LENGTH_SHORT).show();
 
         cursor.close();

@@ -14,13 +14,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "QLChiTieu.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME = "thuChi";
+    private static final String TABLE_THUCHI = "thuChi";
     private static final String COLUMN_ID = "MaThuChi";
     private static final String COLUMN_TITLE = "TieuDe";
     private static final String COLUMN_DATE = "NgayThuChi";
     private static final String COLUMN_PAYMENT = "KhoanTien";
     private static final String COLUMN_TYPE = "LoaiThuChi";
     private static final String COLUMN_CATEGORY = "DanhMuc";
+
+    private static final String TABLE_SETTING = "setting";
+    private static final String COLUMN_ID_SETTING = "MaSetting";
+    private static final String COLUMN_PIN = "PIN";
+    private static final String COLUMN_HAN_MUC = "HanMuc";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,24 +34,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + TABLE_NAME +
+        String queryThuChi = "CREATE TABLE " + TABLE_THUCHI +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_DATE + " TEXT, " +
                 COLUMN_PAYMENT + " INTEGER, " +
                 COLUMN_TYPE + " TEXT, " +
                 COLUMN_CATEGORY + " TEXT);";
-        db.execSQL(query);
+        db.execSQL(queryThuChi);
+
+        String querySetting = "CREATE TABLE " + TABLE_SETTING +
+                " (" + COLUMN_ID_SETTING + " INTEGER PRIMARY KEY, " +
+                COLUMN_PIN + " INTEGER, " +
+                COLUMN_HAN_MUC + " INTEGER);";
+        db.execSQL(querySetting);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_THUCHI);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTING);
         onCreate(db);
     }
 
     public Cursor getAll(String type) {
-        String query = "SELECT * FROM " + TABLE_NAME +
+        String query = "SELECT * FROM " + TABLE_THUCHI +
                 " WHERE " + COLUMN_TYPE + " = ?" +
                 " ORDER BY " + COLUMN_ID + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -68,7 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_TYPE, Loai);
         cv.put(COLUMN_CATEGORY, DanhMuc);
 
-        long result = db.insert(TABLE_NAME, null, cv);
+        long result = db.insert(TABLE_THUCHI, null, cv);
         if(result == -1) {
             Toast.makeText(context, "Thêm thất bại", Toast.LENGTH_SHORT).show();
         } else {
@@ -86,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_TYPE, loai);
         cv.put(COLUMN_CATEGORY, danhMuc);
 
-        long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        long result = db.update(TABLE_THUCHI, cv, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         if (result == -1) {
             Toast.makeText(context, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
         } else {
@@ -96,12 +108,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteChiTieu(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_THUCHI, COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
     }
 
     public Cursor getByFilter(String type, String category, String date) {
-        String query = "SELECT * FROM " + TABLE_NAME +
+        String query = "SELECT * FROM " + TABLE_THUCHI +
                 " WHERE " + COLUMN_TYPE + " = ?";
         if(category != null && !category.isEmpty()) {
             query = query + " AND " + COLUMN_CATEGORY + " = '" + category + "'";
@@ -118,5 +130,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, new String[]{type});
         }
         return cursor;
+    }
+
+    public Cursor getSetting() {
+        String query = "SELECT * FROM " + TABLE_SETTING;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor getPIN(String PIN) {
+        String query = "SELECT * FROM " + TABLE_SETTING +
+                " WHERE " + COLUMN_PIN + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, new String[]{PIN});
+        }
+        return cursor;
+    }
+
+    public void addSetting(String PIN) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_ID_SETTING, 1);
+        cv.put(COLUMN_PIN, PIN);
+        cv.put(COLUMN_HAN_MUC, 5000000);
+
+        long result = db.insert(TABLE_SETTING, null, cv);
+        if(result == -1) {
+            Toast.makeText(context, "Setting thất bại", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Setting thành công", Toast.LENGTH_SHORT).show();
+        }
     }
 }

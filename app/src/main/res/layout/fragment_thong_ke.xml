@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:background="#16A000"
                 android:padding="10sp"
-                android:text="Tổng thu: ... VND"
+                android:text="Tổng thu: 0 VND"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -87,7 +87,7 @@
                 android:layout_weight="1"
                 android:background="#A00000"
                 android:padding="10sp"
-                android:text="Tổng chi: ... VND"
+                android:text="Tổng chi: 0 VND"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -98,7 +98,7 @@
             android:layout_height="match_parent"
             android:background="#00A075"
             android:padding="10sp"
-            android:text="Phần dư : ... VND"
+            android:text="Phần dư : 0 VND"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

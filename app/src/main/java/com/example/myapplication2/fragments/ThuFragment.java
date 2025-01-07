@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.AddActivity;
@@ -34,6 +35,7 @@ public class ThuFragment extends Fragment {
     List<ThuChi> thuChiList;
     ThuChiAdapter adapter;
     private String selectedCategory, selectedDate;
+    private TextView noDataTextView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +45,7 @@ public class ThuFragment extends Fragment {
 
         myDb = new DatabaseHelper(getActivity());
         thuChiList = new ArrayList<>();
+        noDataTextView = view.findViewById(R.id.noDataTextView);
         displayData();
 
         adapter = new ThuChiAdapter(getActivity(), thuChiList, thuChi -> {
@@ -100,6 +103,7 @@ public class ThuFragment extends Fragment {
 
         if (cursor == null || cursor.getCount() == 0) {
             thuChiList.clear();
+            noDataTextView.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -118,9 +122,10 @@ public class ThuFragment extends Fragment {
         }
 
         if (adapter != null) {
-            adapter.notifyDataSetChanged(); // Refresh the list in RecyclerView
+            adapter.notifyDataSetChanged();
         }
 
+        noDataTextView.setVisibility(View.GONE);
         Toast.makeText(getActivity(), "Dữ liệu đã được tải", Toast.LENGTH_SHORT).show();
 
         cursor.close();
@@ -134,6 +139,7 @@ public class ThuFragment extends Fragment {
             Toast.makeText(getActivity(), "Không tìm thấy dữ liệu phù hợp", Toast.LENGTH_SHORT).show();
             thuChiList.clear();
             adapter.notifyDataSetChanged();
+            noDataTextView.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -151,6 +157,7 @@ public class ThuFragment extends Fragment {
         }
 
         adapter.notifyDataSetChanged();
+        noDataTextView.setVisibility(View.GONE);
         Toast.makeText(getActivity(), "Dữ liệu đã được lọc", Toast.LENGTH_SHORT).show();
 
         cursor.close();
