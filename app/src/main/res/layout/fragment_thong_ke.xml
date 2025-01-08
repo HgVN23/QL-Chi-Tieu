@@ -32,19 +32,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thongKeTitle3">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputNgayThuChi"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="230dp"
-            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tháng thu chi: "
+            android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/inputNow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tháng thu chi"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/dateNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="..."
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnDateNow"
@@ -189,19 +190,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputNgayThuChi"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="230dp"
-            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tháng so sánh: "
+            android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/inputSoSanh"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="So sánh với tháng..."
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/dateSoSanh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="..."
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btnDateSS"

@@ -1,5 +1,6 @@
 package com.example.myapplication2.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -132,6 +133,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    @SuppressLint("Range")
+    public int getSumByType(String type, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int sum = 0;
+        String query = "SELECT SUM(" + COLUMN_PAYMENT + ") AS Total FROM " + TABLE_THUCHI +
+                " WHERE " + COLUMN_TYPE + " = ?" +
+                " AND substr(" + COLUMN_DATE + ", 4, 7) = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{type, date});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                sum = cursor.getInt(cursor.getColumnIndex("Total"));
+            }
+            cursor.close();
+        }
+        return sum;
+    }
+
+
     public Cursor getSetting() {
         String query = "SELECT * FROM " + TABLE_SETTING;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -144,7 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getPIN(String PIN) {
-        String query = "SELECT * FROM " + TABLE_SETTING +
+        String query = "SELECT " + COLUMN_PIN + " FROM " + TABLE_SETTING +
                 " WHERE " + COLUMN_PIN + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -154,6 +174,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    public Cursor getHanMuc() {
+        String query = "SELECT " + COLUMN_HAN_MUC + " FROM " + TABLE_SETTING +
+                " WHERE " + COLUMN_ID_SETTING + " = 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public void updateHanMuc(int newHanMuc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HAN_MUC, newHanMuc);
+
+        db.update(TABLE_SETTING, values, COLUMN_ID_SETTING + " = 1", null);
+        db.close();
+    }
+
 
     public void addSetting(String PIN) {
         SQLiteDatabase db = this.getWritableDatabase();

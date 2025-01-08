@@ -78,14 +78,14 @@
             android:id="@+id/btnBackFilter"
             android:layout_width="140dp"
             android:layout_height="63dp"
-            android:backgroundTint="#8F9193"
+            android:backgroundTint="@color/back"
             android:text="Quay lại" />
 
         <Button
             android:id="@+id/btnFilterConfirm"
             android:layout_width="150dp"
             android:layout_height="63dp"
-            android:backgroundTint="#169900"
+            android:backgroundTint="@color/success"
             android:text="Lọc danh sách" />
 
     </LinearLayout>

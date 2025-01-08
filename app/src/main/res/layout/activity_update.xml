@@ -130,14 +130,14 @@
             android:id="@+id/btnBackUpdate"
             android:layout_width="140dp"
             android:layout_height="63dp"
-            android:backgroundTint="#8F9193"
+            android:backgroundTint="@color/back"
             android:text="Quay lại" />
 
         <Button
             android:id="@+id/btnUpdateConfirm"
             android:layout_width="140dp"
             android:layout_height="63dp"
-            android:backgroundTint="#169900"
+            android:backgroundTint="@color/success"
             android:text="Cập nhật" />
     </LinearLayout>
 
