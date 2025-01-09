@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,9 +19,9 @@ import com.example.myapplication2.db.DatabaseHelper;
 public class LoginActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     EditText inputPIN1, inputPIN2, inputPIN3, inputPIN4, inputPIN5, inputPIN6;
-    Button btnLogin;
+    Button btnLogin, btnShowPIN;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,35 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnShowPIN = findViewById(R.id.btnShowPIN);
+        btnShowPIN.setOnClickListener(new View.OnClickListener() {
+            private boolean isPinVisible = false;
+
+            @Override
+            public void onClick(View view) {
+                isPinVisible = !isPinVisible;
+
+                if (isPinVisible) {
+                    inputPIN1.setTransformationMethod(null);
+                    inputPIN2.setTransformationMethod(null);
+                    inputPIN3.setTransformationMethod(null);
+                    inputPIN4.setTransformationMethod(null);
+                    inputPIN5.setTransformationMethod(null);
+                    inputPIN6.setTransformationMethod(null);
+                    btnShowPIN.setBackgroundResource(R.drawable.hide);
+                } else {
+                    inputPIN1.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN2.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN3.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN4.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN5.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN6.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    btnShowPIN.setBackgroundResource(R.drawable.show);
+                }
+            }
+        });
+
     }
 
     private boolean isSettingAvailable() {
@@ -93,21 +124,22 @@ public class LoginActivity extends AppCompatActivity {
     private android.text.TextWatcher createTextWatcher(final EditText nextEditText) {
         return new android.text.TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 if (charSequence.length() == 1) {
-                    nextEditText.requestFocus();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            nextEditText.requestFocus();
+                        }
+                    }, 1);
                 }
             }
 
             @Override
-            public void afterTextChanged(android.text.Editable editable) {
-
-            }
+            public void afterTextChanged(android.text.Editable editable) {}
         };
     }
 }

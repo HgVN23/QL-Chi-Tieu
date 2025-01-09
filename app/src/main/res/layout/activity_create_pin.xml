@@ -93,6 +93,13 @@
             android:inputType="numberPassword"
             android:maxLength="1"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnShowPIN2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/show" />
     </LinearLayout>
 
     <TextView
@@ -181,6 +188,13 @@
             android:inputType="numberPassword"
             android:maxLength="1"
             android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnShowPIN3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/show" />
 
     </LinearLayout>
 

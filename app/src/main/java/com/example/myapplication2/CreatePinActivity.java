@@ -3,6 +3,7 @@ package com.example.myapplication2;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,7 @@ public class CreatePinActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     EditText inputPIN1, inputPIN2, inputPIN3, inputPIN4, inputPIN5, inputPIN6;
     EditText inputCPIN1, inputCPIN2, inputCPIN3, inputCPIN4, inputCPIN5, inputCPIN6;
-    Button btnConfirmPIN;
+    Button btnConfirmPIN, btnShowPIN, btnShowCPIN;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -87,26 +88,83 @@ public class CreatePinActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnShowPIN = findViewById(R.id.btnShowPIN2);
+        btnShowPIN.setOnClickListener(new View.OnClickListener() {
+            private boolean isPinVisible = false;
+
+            @Override
+            public void onClick(View view) {
+                isPinVisible = !isPinVisible;
+
+                if (isPinVisible) {
+                    inputPIN1.setTransformationMethod(null);
+                    inputPIN2.setTransformationMethod(null);
+                    inputPIN3.setTransformationMethod(null);
+                    inputPIN4.setTransformationMethod(null);
+                    inputPIN5.setTransformationMethod(null);
+                    inputPIN6.setTransformationMethod(null);
+                    btnShowPIN.setBackgroundResource(R.drawable.hide);
+                } else {
+                    inputPIN1.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN2.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN3.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN4.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN5.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputPIN6.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    btnShowPIN.setBackgroundResource(R.drawable.show);
+                }
+            }
+        });
+
+        btnShowCPIN = findViewById(R.id.btnShowPIN3);
+        btnShowCPIN.setOnClickListener(new View.OnClickListener() {
+            private boolean isPinVisible = false;
+
+            @Override
+            public void onClick(View view) {
+                isPinVisible = !isPinVisible;
+
+                if (isPinVisible) {
+                    inputCPIN1.setTransformationMethod(null);
+                    inputCPIN2.setTransformationMethod(null);
+                    inputCPIN3.setTransformationMethod(null);
+                    inputCPIN4.setTransformationMethod(null);
+                    inputCPIN5.setTransformationMethod(null);
+                    inputCPIN6.setTransformationMethod(null);
+                    btnShowCPIN.setBackgroundResource(R.drawable.hide);
+                } else {
+                    inputCPIN1.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputCPIN2.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputCPIN3.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputCPIN4.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputCPIN5.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    inputCPIN6.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
+                    btnShowCPIN.setBackgroundResource(R.drawable.show);
+                }
+            }
+        });
     }
 
     private android.text.TextWatcher createTextWatcher(final EditText nextEditText) {
         return new android.text.TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 if (charSequence.length() == 1) {
-                    nextEditText.requestFocus();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            nextEditText.requestFocus();
+                        }
+                    }, 1);
                 }
             }
 
             @Override
-            public void afterTextChanged(android.text.Editable editable) {
-
-            }
+            public void afterTextChanged(android.text.Editable editable) {}
         };
     }
 }
