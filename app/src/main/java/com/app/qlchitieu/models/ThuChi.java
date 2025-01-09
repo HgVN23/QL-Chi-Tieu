@@ -1,4 +1,4 @@
-package com.example.myapplication2.models;
+package com.app.qlchitieu.models;
 
 public class ThuChi {
     private int id;

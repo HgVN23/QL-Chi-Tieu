@@ -1,4 +1,4 @@
-package com.example.myapplication2.fragments;
+package com.app.qlchitieu.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.myapplication2.R;
-import com.example.myapplication2.db.DatabaseHelper;
+import com.app.qlchitieu.R;
+import com.app.qlchitieu.db.DatabaseHelper;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DecimalFormat;

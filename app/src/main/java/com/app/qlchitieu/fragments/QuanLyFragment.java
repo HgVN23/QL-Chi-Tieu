@@ -1,4 +1,4 @@
-package com.example.myapplication2.fragments;
+package com.app.qlchitieu.fragments;
 
 import android.os.Bundle;
 
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapplication2.R;
-import com.example.myapplication2.adapters.MyViewPagerAdapter;
+import com.app.qlchitieu.R;
+import com.app.qlchitieu.adapters.MyViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;

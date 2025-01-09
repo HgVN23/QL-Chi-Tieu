@@ -1,4 +1,4 @@
-package com.example.myapplication2.adapters;
+package com.app.qlchitieu.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myapplication2.R;
+import com.app.qlchitieu.R;
 
 public class DanhMucAdapter extends ArrayAdapter<JSONObject> {
     private Context context;

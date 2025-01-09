@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.app.qlchitieu;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication2.db.DatabaseHelper;
+import com.app.qlchitieu.db.DatabaseHelper;
 
 public class CreatePinActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;

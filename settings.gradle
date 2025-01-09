@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application 2"
+rootProject.name = "QL Chi tiêu"
 include ':app'

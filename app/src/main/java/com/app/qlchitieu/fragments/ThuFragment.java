@@ -1,4 +1,4 @@
-package com.example.myapplication2.fragments;
+package com.app.qlchitieu.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,13 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication2.AddActivity;
-import com.example.myapplication2.FilterActivity;
-import com.example.myapplication2.db.DatabaseHelper;
-import com.example.myapplication2.R;
-import com.example.myapplication2.adapters.ThuChiAdapter;
-import com.example.myapplication2.UpdateActivity;
-import com.example.myapplication2.models.ThuChi;
+import com.app.qlchitieu.AddActivity;
+import com.app.qlchitieu.FilterActivity;
+import com.app.qlchitieu.db.DatabaseHelper;
+import com.app.qlchitieu.R;
+import com.app.qlchitieu.adapters.ThuChiAdapter;
+import com.app.qlchitieu.UpdateActivity;
+import com.app.qlchitieu.models.ThuChi;
 
 import java.util.ArrayList;
 import java.util.List;

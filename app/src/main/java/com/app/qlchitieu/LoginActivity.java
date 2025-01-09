@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.app.qlchitieu;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,13 +8,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication2.db.DatabaseHelper;
+import com.app.qlchitieu.db.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;

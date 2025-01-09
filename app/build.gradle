@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myapplication2'
+    namespace 'com.app.qlchitieu'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.myapplication2"
+        applicationId "com.app.qlchitieu"
         minSdk 21
         targetSdk 34
         versionCode 1

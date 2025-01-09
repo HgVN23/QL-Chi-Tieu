@@ -1,27 +1,21 @@
-package com.example.myapplication2;
+package com.app.qlchitieu;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication2.adapters.DanhMucAdapter;
+import com.app.qlchitieu.adapters.DanhMucAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class FilterActivity extends AppCompatActivity {
     AutoCompleteTextView inputDanhMuc;

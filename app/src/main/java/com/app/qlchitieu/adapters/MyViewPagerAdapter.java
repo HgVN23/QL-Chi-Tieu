@@ -1,12 +1,12 @@
-package com.example.myapplication2.adapters;
+package com.app.qlchitieu.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.myapplication2.fragments.ChiFragment;
-import com.example.myapplication2.fragments.QuanLyFragment;
-import com.example.myapplication2.fragments.ThuFragment;
+import com.app.qlchitieu.fragments.ChiFragment;
+import com.app.qlchitieu.fragments.QuanLyFragment;
+import com.app.qlchitieu.fragments.ThuFragment;
 
 public class MyViewPagerAdapter extends FragmentStateAdapter {
     public MyViewPagerAdapter(@NonNull QuanLyFragment fragmentActivity) {

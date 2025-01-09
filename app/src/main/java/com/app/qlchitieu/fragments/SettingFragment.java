@@ -1,4 +1,4 @@
-package com.example.myapplication2.fragments;
+package com.app.qlchitieu.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.myapplication2.R;
+import com.app.qlchitieu.R;
 
 public class SettingFragment extends Fragment {
 

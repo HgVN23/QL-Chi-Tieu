@@ -1,4 +1,4 @@
-package com.example.myapplication2.adapters;
+package com.app.qlchitieu.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication2.R;
-import com.example.myapplication2.models.ThuChi;
+import com.app.qlchitieu.R;
+import com.app.qlchitieu.models.ThuChi;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

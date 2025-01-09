@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.app.qlchitieu;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -13,8 +13,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication2.adapters.DanhMucAdapter;
-import com.example.myapplication2.db.DatabaseHelper;
+import com.app.qlchitieu.adapters.DanhMucAdapter;
+import com.app.qlchitieu.db.DatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

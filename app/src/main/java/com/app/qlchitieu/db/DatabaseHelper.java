@@ -1,4 +1,4 @@
-package com.example.myapplication2.db;
+package com.app.qlchitieu.db;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;

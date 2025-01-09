@@ -1,4 +1,4 @@
-package com.example.myapplication2;
+package com.app.qlchitieu;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapplication2.fragments.QuanLyFragment;
-import com.example.myapplication2.fragments.SettingFragment;
-import com.example.myapplication2.fragments.ThongKeFragment;
+import com.app.qlchitieu.fragments.QuanLyFragment;
+import com.app.qlchitieu.fragments.SettingFragment;
+import com.app.qlchitieu.fragments.ThongKeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
