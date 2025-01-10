@@ -13,6 +13,12 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnReloadChi"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ic_reload" />
+
+        <Button
             android:id="@+id/btnAddChi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

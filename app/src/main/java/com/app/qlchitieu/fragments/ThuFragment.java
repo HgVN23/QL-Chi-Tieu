@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ThuFragment extends Fragment {
-    Button btnAdd, btnFilter;
+    Button btnAdd, btnFilter, btnReload;
     DatabaseHelper myDb;
     String type = "thu";
     List<ThuChi> thuChiList;
@@ -84,6 +84,14 @@ public class ThuFragment extends Fragment {
             }
         });
 
+        btnReload = view.findViewById(R.id.btnReloadThu);
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayData();
+            }
+        });
+
         return view;
     }
 
@@ -101,33 +109,36 @@ public class ThuFragment extends Fragment {
     void displayData() {
         Cursor cursor = myDb.getAll(type);
 
-        if (cursor == null || cursor.getCount() == 0) {
-            thuChiList.clear();
-            noDataTextView.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+        // Clear the list before loading new data
         thuChiList.clear();
 
-        while (cursor.moveToNext()) {
-            thuChiList.add(new ThuChi(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getInt(3),
-                    cursor.getString(4),
-                    cursor.getString(5)
-            ));
+        if (cursor == null || cursor.getCount() == 0) {
+            // No data found, display the no data message
+            noDataTextView.setVisibility(View.VISIBLE);
+            Toast.makeText(getActivity(), "Dữ liệu rỗng", Toast.LENGTH_SHORT).show();
+        } else {
+            // Data found, populate the list
+            while (cursor.moveToNext()) {
+                thuChiList.add(new ThuChi(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getString(4),
+                        cursor.getString(5)
+                ));
+            }
+            // Hide the "No Data" message and update RecyclerView
+            noDataTextView.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "Dữ liệu đã được tải", Toast.LENGTH_SHORT).show();
         }
 
+        // Notify the adapter that the data has changed
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
 
-        noDataTextView.setVisibility(View.GONE);
-        Toast.makeText(getActivity(), "Dữ liệu đã được tải", Toast.LENGTH_SHORT).show();
-
+        // Close the cursor after use
         cursor.close();
     }
 
@@ -135,32 +146,38 @@ public class ThuFragment extends Fragment {
     void filterData(String category, String date) {
         Cursor cursor = myDb.getByFilter(type, category, date);
 
-        if (cursor == null || cursor.getCount() == 0) {
-            Toast.makeText(getActivity(), "Không tìm thấy dữ liệu phù hợp", Toast.LENGTH_SHORT).show();
-            thuChiList.clear();
-            adapter.notifyDataSetChanged();
-            noDataTextView.setVisibility(View.VISIBLE);
-            return;
-        }
-
+        // Clear the list before filtering data
         thuChiList.clear();
 
-        while (cursor.moveToNext()) {
-            thuChiList.add(new ThuChi(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getInt(3),
-                    cursor.getString(4),
-                    cursor.getString(5)
-            ));
+        if (cursor == null || cursor.getCount() == 0) {
+            // No data found after filtering, display the no data message
+            Toast.makeText(getActivity(), "Không tìm thấy dữ liệu phù hợp", Toast.LENGTH_SHORT).show();
+            noDataTextView.setVisibility(View.VISIBLE);
+        } else {
+            // Data found after filtering, populate the list
+            while (cursor.moveToNext()) {
+                thuChiList.add(new ThuChi(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getString(4),
+                        cursor.getString(5)
+                ));
+            }
+            // Hide the "No Data" message and update RecyclerView
+            noDataTextView.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "Dữ liệu đã được lọc", Toast.LENGTH_SHORT).show();
         }
 
-        adapter.notifyDataSetChanged();
-        noDataTextView.setVisibility(View.GONE);
-        Toast.makeText(getActivity(), "Dữ liệu đã được lọc", Toast.LENGTH_SHORT).show();
+        // Notify the adapter that the data has changed
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
 
+        // Close the cursor after use
         cursor.close();
     }
+
 
 }

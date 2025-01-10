@@ -13,6 +13,12 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnReloadThu"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:background="@drawable/ic_reload" />
+
+        <Button
             android:id="@+id/btnAddThu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,8 +30,8 @@
             android:id="@+id/btnFilterThu"
             android:layout_width="54dp"
             android:layout_height="54dp"
-            android:background="@drawable/ic_filter"
-            android:backgroundTint="#C81C1C" />
+            android:background="@drawable/ic_filter" />
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
