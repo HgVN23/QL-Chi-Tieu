@@ -151,6 +151,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return sum;
     }
 
+    public Cursor getSumByCategoryForMonth(String type, String monthYear) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_CATEGORY + ", SUM(" + COLUMN_PAYMENT + ") AS totalPayment" +
+                " FROM " + TABLE_THUCHI +
+                " WHERE " + COLUMN_TYPE + " = ?" +
+                " AND substr(" + COLUMN_DATE + ", 4, 7) = ?" +
+                " GROUP BY " + COLUMN_CATEGORY;
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, new String[]{type, monthYear});
+        }
+
+        return cursor;
+    }
+
 
     public Cursor getSetting() {
         String query = "SELECT * FROM " + TABLE_SETTING;
@@ -197,7 +213,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
     public void addSetting(String PIN) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -212,5 +227,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Toast.makeText(context, "Setting thành công", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void recreateThuChi() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_THUCHI;
+        db.execSQL(dropTableQuery);
+
+        String createTableQuery = "CREATE TABLE " + TABLE_THUCHI +
+                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TITLE + " TEXT, " +
+                COLUMN_DATE + " TEXT, " +
+                COLUMN_PAYMENT + " INTEGER, " +
+                COLUMN_TYPE + " TEXT, " +
+                COLUMN_CATEGORY + " TEXT);";
+        db.execSQL(createTableQuery);
+
+        db.close();
     }
 }

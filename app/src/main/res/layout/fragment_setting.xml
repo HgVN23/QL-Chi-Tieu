@@ -1,14 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingFragment">
+    android:orientation="vertical"
+    tools:context=".SettingFragment" >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/settingTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:padding="10sp"
+        android:text="Cài đặt"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/info1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Quản lý Chi tiêu cá nhân"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/info2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="UNETI | Trường Đại học\nKinh tế - Kỹ thuật công nghiệp"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Thực tập cuối khóa"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Giảng viên hướng dẫn:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Th.S Mai Mạnh Trừng"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Nhóm sinh viên thực hiện: Nhóm 5"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Vương Minh Hoàng"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Nguyễn Văn Tuyển"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Đặng Phương Thảo"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Vũ Vinh Hiển"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Nguyễn Thị Thảo"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/btnCleanData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:text="Xóa dữ liệu" />
+
+            <Button
+                android:id="@+id/btnTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Gen data để Test" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
