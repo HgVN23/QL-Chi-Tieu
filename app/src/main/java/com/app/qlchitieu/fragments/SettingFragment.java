@@ -77,10 +77,16 @@ public class SettingFragment extends Fragment {
                                 categories.add("Điện");
                                 categories.add("Khác");
 
-                                int payment = 100000;
+                                int payment = 50000;
+                                for (String category : categories) {
+                                    databaseHelper.addChiTieu("Test", "01-11-2024", payment, "thu", category);
+                                    payment += 20000;
+                                }
+
+                                payment = 55000;
                                 for (String category : categories) {
                                     databaseHelper.addChiTieu("Test", "01-12-2024", payment, "thu", category);
-                                    payment += 50000;
+                                    payment += 30000;
                                 }
 
                                 payment = 100000;
@@ -89,16 +95,22 @@ public class SettingFragment extends Fragment {
                                     payment += 50000;
                                 }
 
+                                payment = 5000;
+                                for (String category : categories) {
+                                    databaseHelper.addChiTieu("Test", "01-11-2024", payment, "chi", category);
+                                    payment += 3000;
+                                }
+
                                 payment = 10000;
                                 for (String category : categories) {
                                     databaseHelper.addChiTieu("Test", "01-12-2024", payment, "chi", category);
                                     payment += 5000;
                                 }
 
-                                payment = 10000;
+                                payment = 20000;
                                 for (String category : categories) {
                                     databaseHelper.addChiTieu("Test", "01-01-2025", payment, "chi", category);
-                                    payment += 5000;
+                                    payment += 4000;
                                 }
 
                                 Intent intent = new Intent(getContext(), MainActivity.class);

@@ -58,6 +58,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void recreateThuChi() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_THUCHI;
+        db.execSQL(dropTableQuery);
+
+        String createTableQuery = "CREATE TABLE " + TABLE_THUCHI +
+                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TITLE + " TEXT, " +
+                COLUMN_DATE + " TEXT, " +
+                COLUMN_PAYMENT + " INTEGER, " +
+                COLUMN_TYPE + " TEXT, " +
+                COLUMN_CATEGORY + " TEXT);";
+        db.execSQL(createTableQuery);
+
+        db.close();
+    }
+
     public Cursor getAll(String type) {
         String query = "SELECT * FROM " + TABLE_THUCHI +
                 " WHERE " + COLUMN_TYPE + " = ?" +
@@ -167,6 +185,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor getSumByTypeForMonth(String type, String monthYear) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(" + COLUMN_PAYMENT + ") AS totalPayment FROM " + TABLE_THUCHI +
+                " WHERE " + COLUMN_TYPE + " = ?" +
+                " AND substr(" + COLUMN_DATE + ", 4, 7) = ?";
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, new String[]{type, monthYear});
+        }
+
+        return cursor;
+    }
 
     public Cursor getSetting() {
         String query = "SELECT * FROM " + TABLE_SETTING;
@@ -229,21 +260,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void recreateThuChi() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String dropTableQuery = "DROP TABLE IF EXISTS " + TABLE_THUCHI;
-        db.execSQL(dropTableQuery);
-
-        String createTableQuery = "CREATE TABLE " + TABLE_THUCHI +
-                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_TITLE + " TEXT, " +
-                COLUMN_DATE + " TEXT, " +
-                COLUMN_PAYMENT + " INTEGER, " +
-                COLUMN_TYPE + " TEXT, " +
-                COLUMN_CATEGORY + " TEXT);";
-        db.execSQL(createTableQuery);
-
-        db.close();
-    }
 }

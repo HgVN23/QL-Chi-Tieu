@@ -41,7 +41,7 @@ public class ThongKeFragment extends Fragment {
     private Button btnDateNow, btnDateSS, btnSetup;
     private DatabaseHelper databaseHelper;
     private int CanhBao;
-    private PieChart pieChartCateThu, pieChartCateChi;
+    private PieChart pieChartCateThu, pieChartCateChi, pieChartSSThu, pieChartSSChi;
     private ValueFormatter formatter;
 
     @SuppressLint("MissingInflatedId")
@@ -55,7 +55,8 @@ public class ThongKeFragment extends Fragment {
         setupHanMuc(getCurrentDate());
         displaySums(getCurrentDate());
         setupDatePickers();
-        setupPieCharts();
+        setupPieChartCates();
+        setupPieChartSSs();
 
         return view;
     }
@@ -72,6 +73,9 @@ public class ThongKeFragment extends Fragment {
         hanMuc = view.findViewById(R.id.hanMuc);
         pieChartCateThu = view.findViewById(R.id.pieChartCateThu);
         pieChartCateChi = view.findViewById(R.id.pieChartCateChi);
+        pieChartSSThu = view.findViewById(R.id.pieChartSSThu);
+        pieChartSSChi = view.findViewById(R.id.pieChartSSChi);
+
         formatter = new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -95,6 +99,10 @@ public class ThongKeFragment extends Fragment {
 
     private String getCurrentDate() {
         return dateNow.getText().toString().trim();
+    }
+
+    private String getSSDate() {
+        return dateSoSanh.getText().toString().trim();
     }
 
     private void displaySums(String date) {
@@ -134,6 +142,8 @@ public class ThongKeFragment extends Fragment {
             new DatePickerDialog(getActivity(), (datePicker, selectedYear, selectedMonth, day) -> {
                 textView.setText(String.format("%02d-%04d", selectedMonth + 1, selectedYear));
                 displaySums(textView.getText().toString().trim());
+                setupPieChartCates();
+                setupPieChartSSs();
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
         });
     }
@@ -172,9 +182,14 @@ public class ThongKeFragment extends Fragment {
         });
     }
 
-    private void setupPieCharts() {
+    private void setupPieChartCates() {
         setupPieChartCate(pieChartCateThu, "thu", getCurrentDate());
         setupPieChartCate(pieChartCateChi, "chi", getCurrentDate());
+    }
+
+    private void setupPieChartSSs() {
+        setupPieChartSS(pieChartSSThu, "thu", getCurrentDate(), getSSDate());
+        setupPieChartSS(pieChartSSChi, "chi", getCurrentDate(), getSSDate());
     }
 
     private void setupPieChartCate(PieChart pieChart, String type, String date) {
@@ -216,6 +231,60 @@ public class ThongKeFragment extends Fragment {
         pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(14f);
         pieChart.setCenterText(String.format("Thống kê\ndanh mục\n%s", type));
+        pieChart.setCenterTextSize(16f);
+        pieChart.setCenterTextColor(Color.BLACK);
+        pieChart.setCenterTextTypeface(Typeface.DEFAULT_BOLD);
+
+        Legend legend = pieChart.getLegend();
+        legend.setTextSize(14f);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setWordWrapEnabled(true);
+
+        pieChart.invalidate();
+    }
+
+    private void setupPieChartSS(PieChart pieChart, String type, String dateNow, String dateSS) {
+        List<PieEntry> entries = new ArrayList<>();
+        Cursor cursor = null;
+
+        cursor = databaseHelper.getSumByTypeForMonth(type, dateNow);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") int totalPayment = cursor.getInt(cursor.getColumnIndex("totalPayment"));
+                entries.add(new PieEntry(totalPayment, dateNow));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        cursor = databaseHelper.getSumByTypeForMonth(type, dateSS);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") int totalPayment = cursor.getInt(cursor.getColumnIndex("totalPayment"));
+                entries.add(new PieEntry(totalPayment,dateSS));
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
+        dataSet.setColors(new int[]{ Color.RED, Color.GREEN });
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(14f);
+        dataSet.setValueFormatter(formatter);
+
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+
+        Description description = new Description();
+        description.setText("");
+        pieChart.setDescription(description);
+        pieChart.setUsePercentValues(true);
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setEntryLabelTextSize(14f);
+        pieChart.setCenterText(String.format("So sánh\nkhoản %s", type));
         pieChart.setCenterTextSize(16f);
         pieChart.setCenterTextColor(Color.BLACK);
         pieChart.setCenterTextTypeface(Typeface.DEFAULT_BOLD);
