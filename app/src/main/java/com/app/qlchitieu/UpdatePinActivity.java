@@ -1,7 +1,7 @@
 package com.app.qlchitieu;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,23 +11,39 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.app.qlchitieu.db.DatabaseHelper;
 
-public class CreatePinActivity extends AppCompatActivity {
+public class UpdatePinActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
+    EditText inputOPIN1, inputOPIN2, inputOPIN3, inputOPIN4, inputOPIN5, inputOPIN6;
     EditText inputPIN1, inputPIN2, inputPIN3, inputPIN4, inputPIN5, inputPIN6;
     EditText inputCPIN1, inputCPIN2, inputCPIN3, inputCPIN4, inputCPIN5, inputCPIN6;
-    Button btnConfirmPIN, btnShowPIN, btnShowCPIN;
+    Button btnConfirmPIN, btnShowPIN, btnShowCPIN, btnShowOPIN, btnBack;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_create_pin);
+        setContentView(R.layout.activity_update_pin);
 
         dbHelper = new DatabaseHelper(this);
+
+        inputOPIN1 = findViewById(R.id.inputOPIN1);
+        inputOPIN2 = findViewById(R.id.inputOPIN2);
+        inputOPIN3 = findViewById(R.id.inputOPIN3);
+        inputOPIN4 = findViewById(R.id.inputOPIN4);
+        inputOPIN5 = findViewById(R.id.inputOPIN5);
+        inputOPIN6 = findViewById(R.id.inputOPIN6);
+        inputOPIN1.addTextChangedListener(createTextWatcher(inputOPIN2, inputOPIN1));
+        inputOPIN2.addTextChangedListener(createTextWatcher(inputOPIN3, inputOPIN1));
+        inputOPIN3.addTextChangedListener(createTextWatcher(inputOPIN4, inputOPIN2));
+        inputOPIN4.addTextChangedListener(createTextWatcher(inputOPIN5, inputOPIN3));
+        inputOPIN5.addTextChangedListener(createTextWatcher(inputOPIN6, inputOPIN4));
+        inputOPIN6.addTextChangedListener(createTextWatcher(inputOPIN6, inputOPIN5));
 
         inputPIN1 = findViewById(R.id.inputPIN1);
         inputPIN2 = findViewById(R.id.inputPIN2);
@@ -55,10 +71,35 @@ public class CreatePinActivity extends AppCompatActivity {
         inputCPIN5.addTextChangedListener(createTextWatcher(inputCPIN6, inputCPIN4));
         inputCPIN6.addTextChangedListener(createTextWatcher(inputCPIN6, inputCPIN5));
 
+        btnBack = findViewById(R.id.btnBackP);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        btnShowPIN = findViewById(R.id.btnShowPIN2);
+        btnShowCPIN = findViewById(R.id.btnShowPIN3);
+        btnShowOPIN = findViewById(R.id.btnShowPIN4);
+
+        setupToggleVisibilityButton(btnShowPIN, false, R.drawable.show, R.drawable.hide,
+                inputPIN1, inputPIN2, inputPIN3, inputPIN4, inputPIN5, inputPIN6);
+        setupToggleVisibilityButton(btnShowCPIN, false, R.drawable.show, R.drawable.hide,
+                inputCPIN1, inputCPIN2, inputCPIN3, inputCPIN4, inputCPIN5, inputCPIN6);
+        setupToggleVisibilityButton(btnShowOPIN, false, R.drawable.show, R.drawable.hide,
+                inputOPIN1, inputOPIN2, inputOPIN3, inputOPIN4, inputOPIN5, inputOPIN6);
+
         btnConfirmPIN = findViewById(R.id.btnConfirmPIN);
         btnConfirmPIN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String oldPin = inputOPIN1.getText().toString()
+                        + inputOPIN2.getText().toString()
+                        + inputOPIN3.getText().toString()
+                        + inputOPIN4.getText().toString()
+                        + inputOPIN5.getText().toString()
+                        + inputOPIN6.getText().toString();
                 String pin = inputPIN1.getText().toString()
                         + inputPIN2.getText().toString()
                         + inputPIN3.getText().toString()
@@ -72,81 +113,34 @@ public class CreatePinActivity extends AppCompatActivity {
                         + inputCPIN5.getText().toString()
                         + inputCPIN6.getText().toString();
 
+                // Validate inputs
                 if (pin.length() < 6 || confirmPin.length() < 6) {
-                    Toast.makeText(CreatePinActivity.this, "Mã PIN phải có đủ 6 số", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdatePinActivity.this, "Mã PIN phải có đủ 6 số", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!pin.equals(confirmPin)) {
-                    Toast.makeText(CreatePinActivity.this, "Mã PIN không khớp", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdatePinActivity.this, "Mã PIN không khớp", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                dbHelper.addSetting(pin);
-                Toast.makeText(CreatePinActivity.this, "Mã PIN được lưu thành công", Toast.LENGTH_SHORT).show();
+                Cursor cursor = dbHelper.getPIN(oldPin);
+                if (cursor != null && cursor.moveToFirst()) {
+                    dbHelper.updateSetting(pin);
+                    Toast.makeText(UpdatePinActivity.this, "Mã PIN được cập nhật thành công", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(CreatePinActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        btnShowPIN = findViewById(R.id.btnShowPIN2);
-        btnShowPIN.setOnClickListener(new View.OnClickListener() {
-            private boolean isPinVisible = false;
-
-            @Override
-            public void onClick(View view) {
-                isPinVisible = !isPinVisible;
-
-                if (isPinVisible) {
-                    inputPIN1.setTransformationMethod(null);
-                    inputPIN2.setTransformationMethod(null);
-                    inputPIN3.setTransformationMethod(null);
-                    inputPIN4.setTransformationMethod(null);
-                    inputPIN5.setTransformationMethod(null);
-                    inputPIN6.setTransformationMethod(null);
-                    btnShowPIN.setBackgroundResource(R.drawable.hide);
+                    finish();
                 } else {
-                    inputPIN1.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputPIN2.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputPIN3.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputPIN4.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputPIN5.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputPIN6.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    btnShowPIN.setBackgroundResource(R.drawable.show);
+                    Toast.makeText(UpdatePinActivity.this, "Mã PIN cũ không đúng", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
 
-        btnShowCPIN = findViewById(R.id.btnShowPIN3);
-        btnShowCPIN.setOnClickListener(new View.OnClickListener() {
-            private boolean isPinVisible = false;
-
-            @Override
-            public void onClick(View view) {
-                isPinVisible = !isPinVisible;
-
-                if (isPinVisible) {
-                    inputCPIN1.setTransformationMethod(null);
-                    inputCPIN2.setTransformationMethod(null);
-                    inputCPIN3.setTransformationMethod(null);
-                    inputCPIN4.setTransformationMethod(null);
-                    inputCPIN5.setTransformationMethod(null);
-                    inputCPIN6.setTransformationMethod(null);
-                    btnShowCPIN.setBackgroundResource(R.drawable.hide);
-                } else {
-                    inputCPIN1.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputCPIN2.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputCPIN3.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputCPIN4.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputCPIN5.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    inputCPIN6.setTransformationMethod(new android.text.method.PasswordTransformationMethod());
-                    btnShowCPIN.setBackgroundResource(R.drawable.show);
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
         });
     }
+
     private android.text.TextWatcher createTextWatcher(final EditText nextEditText, final EditText prevEditText) {
         return new android.text.TextWatcher() {
             @Override
@@ -174,5 +168,28 @@ public class CreatePinActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(android.text.Editable editable) {}
         };
+    }
+
+    private void togglePinVisibility(boolean isVisible, View... pinInputs) {
+        for (View input : pinInputs) {
+            if (input instanceof android.widget.EditText) {
+                ((android.widget.EditText) input).setTransformationMethod(
+                        isVisible ? null : new android.text.method.PasswordTransformationMethod()
+                );
+            }
+        }
+    }
+
+    private void setupToggleVisibilityButton(Button button, boolean initialVisibility, int showIcon, int hideIcon, View... pinInputs) {
+        button.setOnClickListener(new View.OnClickListener() {
+            private boolean isPinVisible = initialVisibility;
+
+            @Override
+            public void onClick(View view) {
+                isPinVisible = !isPinVisible;
+                togglePinVisibility(isPinVisible, pinInputs);
+                button.setBackgroundResource(isPinVisible ? hideIcon : showIcon);
+            }
+        });
     }
 }

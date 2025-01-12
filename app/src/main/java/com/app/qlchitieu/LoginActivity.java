@@ -1,13 +1,17 @@
 package com.app.qlchitieu;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     EditText inputPIN1, inputPIN2, inputPIN3, inputPIN4, inputPIN5, inputPIN6;
     Button btnLogin, btnShowPIN;
+    TextView btnForgot;
 
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
@@ -42,11 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         inputPIN5 = findViewById(R.id.inputPIN5);
         inputPIN6 = findViewById(R.id.inputPIN6);
 
-        inputPIN1.addTextChangedListener(createTextWatcher(inputPIN2));
-        inputPIN2.addTextChangedListener(createTextWatcher(inputPIN3));
-        inputPIN3.addTextChangedListener(createTextWatcher(inputPIN4));
-        inputPIN4.addTextChangedListener(createTextWatcher(inputPIN5));
-        inputPIN5.addTextChangedListener(createTextWatcher(inputPIN6));
+        inputPIN1.addTextChangedListener(createTextWatcher(inputPIN2, inputPIN1));
+        inputPIN2.addTextChangedListener(createTextWatcher(inputPIN3, inputPIN1));
+        inputPIN3.addTextChangedListener(createTextWatcher(inputPIN4, inputPIN2));
+        inputPIN4.addTextChangedListener(createTextWatcher(inputPIN5, inputPIN3));
+        inputPIN5.addTextChangedListener(createTextWatcher(inputPIN6, inputPIN4));
+        inputPIN6.addTextChangedListener(createTextWatcher(inputPIN6, inputPIN5));
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +106,30 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        btnForgot = findViewById(R.id.btnForgot);
+        btnForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setTitle("Quên mật khẩu")
+                        .setMessage("Nếu tiếp tục, toàn bộ dữ liệu đã trong Quản lý cũng như mã PIN sẽ bị xóa và ứng dụng sẽ đặt lại. Bạn có chắc chắn không?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                DatabaseHelper databaseHelper = new DatabaseHelper(LoginActivity.this);
+                                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+                                databaseHelper.onUpgrade(db, 0, 0);
+
+                                Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
+            }
+        });
+
     }
 
     private boolean isSettingAvailable() {
@@ -120,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         return isValid;
     }
 
-    private android.text.TextWatcher createTextWatcher(final EditText nextEditText) {
+    private android.text.TextWatcher createTextWatcher(final EditText nextEditText, final EditText prevEditText) {
         return new android.text.TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
@@ -134,6 +164,13 @@ public class LoginActivity extends AppCompatActivity {
                             nextEditText.requestFocus();
                         }
                     }, 1);
+                } else if (charSequence.length() == 0 && before == 1) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            prevEditText.requestFocus();
+                        }
+                    }, 1);
                 }
             }
 
@@ -141,4 +178,5 @@ public class LoginActivity extends AppCompatActivity {
             public void afterTextChanged(android.text.Editable editable) {}
         };
     }
+
 }

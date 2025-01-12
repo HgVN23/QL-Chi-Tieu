@@ -260,4 +260,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void updateSetting(String PIN) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_PIN, PIN);
+
+        int result = db.update(TABLE_SETTING, cv, COLUMN_ID_SETTING + " = ?", new String[]{"1"});
+        if (result == 0) {
+            Toast.makeText(context, "Cập nhật PIN thất bại", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Cập nhật PIN thành công", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

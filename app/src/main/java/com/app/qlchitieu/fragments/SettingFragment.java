@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,15 @@ import androidx.fragment.app.Fragment;
 
 import com.app.qlchitieu.MainActivity;
 import com.app.qlchitieu.R;
+import com.app.qlchitieu.SplashScreenActivity;
+import com.app.qlchitieu.UpdatePinActivity;
 import com.app.qlchitieu.db.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SettingFragment extends Fragment {
-    private Button btnCleanData, btnTest;
+    private Button btnUpdatePIN, btnCleanData, btnCleanAll, btnTest;
     private DatabaseHelper databaseHelper;
 
     @SuppressLint("MissingInflatedId")
@@ -31,13 +34,22 @@ public class SettingFragment extends Fragment {
 
         databaseHelper = new DatabaseHelper(getContext());
 
+        btnUpdatePIN = view.findViewById(R.id.btnUpdatePIN);
+        btnUpdatePIN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), UpdatePinActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btnCleanData = view.findViewById(R.id.btnCleanData);
         btnCleanData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Xóa Dữ Liệu")
-                        .setMessage("Bạn có chắc chắn muốn xóa tất cả dữ liệu?")
+                        .setMessage("Bạn có chắc chắn muốn xóa tất cả dữ liệu trong Quản lý?")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -57,6 +69,32 @@ public class SettingFragment extends Fragment {
             }
         });
 
+        btnCleanAll = view.findViewById(R.id.btnCleanAll);
+        btnCleanAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Lưu ý")
+                        .setMessage("Nếu tiếp tục, toàn bộ dữ liệu đã trong Quản lý cũng như mã PIN sẽ bị xóa và ứng dụng sẽ đặt lại. Bạn có chắc chắn không?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+                                SQLiteDatabase db = databaseHelper.getWritableDatabase();
+                                databaseHelper.onUpgrade(db, 0, 0);
+
+                                Intent intent = new Intent(getContext(), SplashScreenActivity.class);
+                                startActivity(intent);
+
+                                if (getActivity() != null) {
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Hủy", null)
+                        .show();
+            }
+        });
 
         btnTest = view.findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {

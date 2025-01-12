@@ -140,12 +140,28 @@
                 android:background="?android:attr/listDivider" />
 
             <Button
+                android:id="@+id/btnUpdatePIN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/primary"
+                android:text="Đổi mã PIN" />
+
+            <Button
                 android:id="@+id/btnCleanData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/design_default_color_error"
-                android:text="Xóa dữ liệu" />
+                android:text="Xóa dữ liệu quản lý" />
+
+            <Button
+                android:id="@+id/btnCleanAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:text="Xóa toàn bộ dữ liệu" />
 
             <Button
                 android:id="@+id/btnTest"
