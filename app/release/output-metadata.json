@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.myapplication2",
+  "applicationId": "com.app.qlchitieu",
   "variantName": "release",
   "elements": [
     {
