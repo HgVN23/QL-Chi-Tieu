@@ -63,7 +63,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Thực tập cuối khóa"
+                android:text="Thực tập cuối khóa:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/info12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="TTCK_K15_05"
                 android:textSize="20sp" />
 
             <TextView

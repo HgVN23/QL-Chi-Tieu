@@ -106,6 +106,12 @@ public class ThongKeFragment extends Fragment {
     }
 
     private void displaySums(String date) {
+        Cursor cursor = databaseHelper.getHanMuc();
+        if (cursor != null && cursor.moveToFirst()) {
+            CanhBao = cursor.getInt(0);
+            cursor.close();
+        }
+
         int thu = databaseHelper.getSumByType("thu", date);
         int chi = databaseHelper.getSumByType("chi", date);
         int phanDu = thu - chi;
@@ -116,7 +122,12 @@ public class ThongKeFragment extends Fragment {
         sumThu.setText(String.format("Tổng thu: %s VND", decimalFormat.format(thu)));
         sumChi.setText(String.format("Tổng chi: %s VND", decimalFormat.format(chi)));
         sumAll.setText(String.format("Phần dư: %s VND", decimalFormat.format(phanDu)));
-        hanMuc.setText(String.format("Cảnh báo hạn mức: %s", (CanhBao + phanDu > 0 ? "Ổn" : "Vượt mức")));
+
+        if(thu == 0 && chi == 0) {
+            hanMuc.setText("Cảnh báo hạn mức: ...");
+        } else {
+            hanMuc.setText(String.format("Cảnh báo hạn mức: %s", ((CanhBao + phanDu) >= 0 ? "Ổn" : "Vượt mức")));
+        }
     }
 
     private void setupDatePickers() {
